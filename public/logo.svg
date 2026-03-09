@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Veritas mark (15a6a5)">
+  <style>
+    :root { --veritas-ink: #15a6a5; --veritas-accent: #15a6a5; }
+  </style>
+  <path d="M32 4l20 6v17c0 15-20 27-20 27S12 42 12 27V10z"
+        fill="none" stroke="var(--veritas-ink)" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M18 31l9 9 20-22"
+        fill="none" stroke="var(--veritas-accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(18,16)" stroke="var(--veritas-ink)" stroke-width="2" stroke-linecap="round">
+    <path d="M0 0h16"/><path d="M0 7h20"/><path d="M0 14h14"/>
+  </g>
+</svg>

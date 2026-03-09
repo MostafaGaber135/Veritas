@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@plugin "daisyui";
+html{
+    background-color: #101922;
+}
+
+.no-scrollbar{
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+.no-scrollbar::-webkit-scrollbar{
+    display: none; 
+}
+
+.progress-color{
+    color: #01a09d;
+}
+
+.checkbox-color {
+   color: #01a09d;
+}
