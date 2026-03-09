@@ -16,6 +16,7 @@ const getQueryValue = (value: QueryValue): string | undefined => {
   return value;
 };
 
+
 export default async function handler(req: ApiRequest, res: ApiResponse) {
   try {
     const q = getQueryValue(req.query.q);
