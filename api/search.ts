@@ -1,27 +1,41 @@
+type QueryValue = string | string[] | undefined;
+
+interface ApiRequest {
+  query: Record<string, QueryValue>;
+}
+
+interface ApiResponse {
+  status: (code: number) => ApiResponse;
+  json: (body: unknown) => void;
+}
+
 const GNEWS_BASE_URL = "https://gnews.io/api/v4/search";
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
+const getQueryValue = (value: QueryValue): string | undefined => {
+  if (Array.isArray(value)) return value[0];
+  return value;
+};
 
-    const q = searchParams.get("q");
-    const category = searchParams.get("category");
-    const sortby = searchParams.get("sortby");
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
-    const lang = searchParams.get("lang");
-    const country = searchParams.get("country");
-    const max = searchParams.get("max") || "12";
-    const page = searchParams.get("page");
+export default async function handler(req: ApiRequest, res: ApiResponse) {
+  try {
+    const q = getQueryValue(req.query.q);
+    const category = getQueryValue(req.query.category);
+    const sortby = getQueryValue(req.query.sortby);
+    const from = getQueryValue(req.query.from);
+    const to = getQueryValue(req.query.to);
+    const lang = getQueryValue(req.query.lang);
+    const country = getQueryValue(req.query.country);
+    const max = getQueryValue(req.query.max) || "12";
+    const page = getQueryValue(req.query.page);
 
     const apiKey = process.env.GNEWS_API_KEY;
 
     if (!apiKey) {
-      return Response.json({ message: "Missing GNEWS_API_KEY" }, { status: 500 });
+      return res.status(500).json({ message: "Missing GNEWS_API_KEY" });
     }
 
     if (!q || !q.trim()) {
-      return Response.json({ message: "Missing search query" }, { status: 400 });
+      return res.status(400).json({ message: "Missing search query" });
     }
 
     const params = new URLSearchParams({
@@ -39,16 +53,13 @@ export async function GET(request: Request) {
     if (page) params.set("page", page);
 
     const response = await fetch(`${GNEWS_BASE_URL}?${params.toString()}`);
-    const data = await response.json();
+    const data: unknown = await response.json();
 
-    return Response.json(data, { status: response.status });
+    return res.status(response.status).json(data);
   } catch (error) {
-    return Response.json(
-      {
-        message: "Failed to search news",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+    return res.status(500).json({
+      message: "Failed to search news",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 }
