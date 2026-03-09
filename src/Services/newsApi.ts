@@ -2,16 +2,12 @@ import axios, { type AxiosError, type AxiosResponse } from "axios";
 import type { NewsResponse } from "../Types/newsTypes";
 import NoImageAvailable from "../assets/No_image_available.png";
 
-const TOP_HEADLINES_URL = "https://gnews.io/api/v4/top-headlines";
-const SEARCH_URL = "https://gnews.io/api/v4/search";
+const TOP_HEADLINES_URL = "/api/top-headlines";
+const SEARCH_URL = "/api/search";
 
 const DEFAULT_LIMIT = 12;
 const DEFAULT_LANG = "en";
 const DEFAULT_COUNTRY = "us";
-
-const API_KEY: string =
-  (import.meta as unknown as { env?: { VITE_GNEWS_KEY?: string } })?.env?.VITE_GNEWS_KEY ??
-  "40e6fe183be26d9b349a7a5caaeda0cd";
 
 async function getWithRetry<T>(
   url: string,
@@ -70,7 +66,6 @@ export async function fetchNewsByCategory(
     lang,
     country,
     max: limit,
-    apikey: API_KEY,
   };
   if (page > 1) requestParams.page = page;
 
@@ -129,7 +124,6 @@ export async function searchNews(
 
   const requestParams: Record<string, string | number> = {
     q: query,
-    apikey: API_KEY,
     max: limit,
   };
 
